@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intlTelInput.css">
+    <link href="../css/customstyle.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo Utente</title>
+    <style>
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 2rem auto;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="tel"] {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Profilo Utente</h2>
+        <form id="userForm">
+            <div>
+                <label for="name">Nome:</label>
+                <input type="text" id="name" name="name" required placeholder="Inserisci il tuo nome" />
+            </div>
+            <div>
+                <label for="surname">Cognome:</label>
+                <input type="text" id="surname" name="surname" required placeholder="Inserisci il tuo cognome" />
+            </div>
+            <div>
+                <label for="mobile">Cellulare:</label>
+                <input type="tel" id="mobile" name="mobile" required placeholder="Inserisci il tuo numero di telefono" />
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email"/>
+            </div>
+            <button type="button" id="submitBtn">Crea Profilo</button>
+        </form>
+    </div>
+    <script src="../js/function.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intlTelInput.min.js"></script>
+    <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const mobileInput = document.querySelector("#mobile");
+        const iti = window.intlTelInput(mobileInput, {
+            initialCountry: "it", // Set Italy as the default country
+            preferredCountries: ["it", "us", "gb"], // Preferred countries
+            separateDialCode: true, // Show the dial code separately
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/utils.js", // Required for validation
+        });
+
+        const submitBtn = document.querySelector("#submitBtn");
+
+        submitBtn.addEventListener("click", () => {
+            const name = document.querySelector("#name").value.trim();
+            const surname = document.querySelector("#surname").value.trim();
+            const mobileValue = mobileInput.value.trim(); // Raw input value
+            const mobileNumber = iti.getNumber(); // Get the full number with country code
+
+            // Debugging logs
+            console.log("Raw Input:", mobileValue);
+            console.log("Formatted Number:", mobileNumber);
+            console.log("Dial Code:", iti.getSelectedCountryData().dialCode);
+
+            // Validate name
+            if (!name) {
+                alert("Per favore, inserisci il nome.");
+                return;
+            }
+
+            // Validate surname
+            if (!surname) {
+                alert("Per favore, inserisci il cognome.");
+                return;
+            }
+
+            // Validate mobile input field
+            if (!mobileValue) {
+                alert("Per favore, inserisci il numero di telefono.");
+                return;
+            }
+
+            // Validate mobile number using intl-tel-input
+            if (!iti.isValidNumber()) {
+                alert("Per favore, inserisci il numero di telefono correttamente.");
+                return;
+            }
+
+            // Create user profile
+            const userProfile = {
+                name,
+                surname,
+                mobile: mobileNumber.replace("+", ""), // Remove the `+` from the number
+            };
+
+            console.log(`Profilo creato: ${JSON.stringify(userProfile)}`); // Log profile
+            alert(`Profilo creato: ${JSON.stringify(userProfile)}`);
+        });
+    });
+
+
+    initPage();
+    </script>
+</body>
+</html>

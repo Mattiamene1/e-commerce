@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+    <link href="../fontawesome-free-6.5.1-web/css/all.min.css" rel="stylesheet">
+    <link href="../css/customstyle.css" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profilo Utente</title>
+    <style>
+        @media (max-width: 630px) {
+            
+            body h2{
+                margin-top: 65px;
+            }
+            
+            #calendar-gdisconnect {
+                position: relative;
+            }
+        }
+
+        @media (max-width: 485px) {
+            
+            body h2{
+                margin-top: 110px;
+            }
+            
+        }
+
+        span[id^=not_signed_]:before {
+            content: 'Accedi con Google';
+            padding-right:20000px; 
+        }
+
+        span[id^=signed_in_]:before {
+            content: 'Esci dal Portale';
+            padding-right:20000px; 
+        }
+
+        .abcRioButtonContentWrapper, .abcRioButton {
+            width: 168px !important;
+        }
+        .button {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #4e4e4e;
+            padding: 10px 35px 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+        .google-logo {
+            width: 24px;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            left: 10px;
+        }
+        .button span {
+            padding-left: 30px;
+            margin-bottom:10px;
+        }
+        div button {
+            margin-bottom:10px;
+        }
+        #calendar-gdisconnect {
+            display: inline;
+            position: relative;
+            top: 0px;
+            right: 0px;
+            padding: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/auth/google" class="button google-btn-long">
+        <img src="./assets/img/googleLogo.png" class="google-logo" alt="Google Logo">
+        <span>Accedi con Google</span>
+    </a>
+
+</body>
+</html>
