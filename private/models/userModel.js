@@ -33,6 +33,12 @@ const UserSchema = mongoose.Schema(
                 type: String
             }
         }],
+        cart: [{ 
+            product: { 
+                type: mongoose.Schema.Types.ObjectId, 
+                ref: 'Product' 
+            }
+        }],
         saved: [{ 
             product: { 
                 type: mongoose.Schema.Types.ObjectId, 

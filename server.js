@@ -6,7 +6,11 @@ const https = require('https');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const port = 3000;
+const cors = require('cors');
 const User = require('./private/models/userModel');
 const endpoints = require('./private/endpoints');
 const {  isLoggedIn, } = require('./private/serverFunctions');
@@ -23,8 +27,8 @@ const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587,
   auth: {
-    user: 'corefitsegreteria@gmail.com',
-    pass: 'ajfb vucd ncgs pbgk',
+    user: 'mattiaexchange11@gmail.com',
+    pass: 'tazq kdpl jmys uyce',
   },
 });
 transporter.verify().then(console.log).catch(console.error);
@@ -46,11 +50,9 @@ app.use(passport.session());
 
 /// App USE
 app.use(endpoints);             // Use the endpoints in ./private/endpoints
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
 app.use(express.static('public'))
-//app.use(express.static(path.join(__dirname, 'client'))); // Forse da togliere
+app.use(express.static(path.join(__dirname, 'client'))); // Forse da togliere
+app.use(cors());
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');                                                                 // Allow requests from any origin
@@ -84,13 +86,12 @@ app.get('/auth/google/success', isLoggedIn, async (req, res) => {
         const userEmail = req.user.email;
         
         const existingUser = await User.findOne({ email: userEmail });
-        console.log(existingUser);
 
         if (!existingUser) {
             console.log(`Utente non registrato. | Email: [${req.user.email}]`);
             return res.redirect('/html/registration.html');
         }
-        res.redirect('/html/index.html');                               // On success redirect to index.html
+        res.redirect('/index.html');                               // On success redirect to index.html
     }catch (error) {
         console.error('Error:', error);
         res.status(500).send('Error during Login');

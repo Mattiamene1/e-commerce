@@ -26,22 +26,22 @@ async function getUserByEmail(email) {
 async function initPage() {
     const email = await getUserEmail();
     if (email) {
-        console.log(email + " used for log in");
         const emailInput = document.getElementById('email');
         emailInput.placeholder = email;
         emailInput.disabled = true;
+        return email;
     }
 }
 
 /// Retrieve Gmail email
 async function getUserEmail() {
     try {
-        const response = await fetch('/user/google');
+        const response = await fetch('/User/Google');
         if (!response.ok) {
             throw new Error('Failed to fetch user email');
         }
         const googleUserEmail = await response.json();
-        return googleUserEmail.email; // Return the email
+        return googleUserEmail.email;
     } catch (error) {
         console.error('Error fetching profile information:', error);
         document.getElementById('profile-info').innerHTML = '<p>Error fetching profile information, try to Log In again</p>';
@@ -50,8 +50,31 @@ async function getUserEmail() {
     }
 }
 
-async function registerUser(profileInfo){
+async function registerUser(profileInfo) {
+
     console.log(profileInfo);
+    try {
+        const response = await fetch('/User', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(profileInfo),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Error registering user:', errorData);
+            throw new Error(errorData.error || 'An error occurred while registering the user.');
+        }
+
+        const result = await response.json();
+        console.log('User registered successfully:', result);
+        return result; // Return the result for further use if needed
+    } catch (error) {
+        console.error('Failed to register user:', error.message);
+        throw error;
+    }
 }
 
 
