@@ -254,6 +254,30 @@ router.get('/Product', async (req, res) => {
     }
 });
 
+/// Get all the info about the user profile logged
+app.get('/user/profile', isLoggedIn, async (req, res) => {
+    try {
+        const mongoUser = await Person.findOne({ email: req.user.email }); // Get user info from Mongo
+
+        const profileInfo = {
+            _id: mongoUser._id,
+            name: mongoUser.name,
+            surname: mongoUser.surname,
+            email: req.user.email,
+            mobile: mongoUser.mobile,
+            role: mongoUser.role,
+            addresses: mongoUser.addresses,
+            cart: mongoUser.cart,
+            saved: mongoUser.saved,
+            orders: mongoUser.orders,
+            return: mongoUser.returns
+        }
+        res.status(200).json(profileInfo); // Send response as JSON
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Cannot retrieve profile information" }); // Send error response as JSON
+    }
+});
 
 
 

@@ -80,5 +80,28 @@ async function registerUser(profileInfo) {
 
 /// Profile
 function getUserProfile(){
-    
+    fetch('/user/profile')
+    .then(response => response.json())
+    .then(profileInfo => {
+        // Populate the HTML elements with profile information
+        console.log(profileInfo);
+        userMobile = "Da Inserire";
+        if(profileInfo.mobile != undefined){
+            userMobile = "+" + profileInfo.mobile;
+        }
+        document.getElementById('profile-info').innerHTML = `
+            <p><img src="${profileInfo.profileImage || '../assets/img/placeholder.jpg'}" alt="Profile Image" id="profile-image"></p>
+            <p><strong>Nome:</strong> ${profileInfo.name}</p>
+            <p><strong>Cognome:</strong> ${profileInfo.surname}</p>
+            <p><strong>Email:</strong> ${profileInfo.email}</p>
+            <p><strong>Cellulare:</strong> ${userMobile}</p>
+        `;
+        const disclaimerDiv = document.getElementById('disclaimer');
+        fetchEventsAndRenderTable(profileInfo._id);
+    })
+    .catch(error => {
+        console.error('Error fetching profile information:', error);
+        document.getElementById('profile-info').innerHTML = '<p>Error fetching profile information, try to Log In again</p>';
+        setTimeout(() => { window.location.href = '../index.html'; }, 0);
+    });
 }
